@@ -106,7 +106,6 @@ describe('Path Observer', function(){
         done();
       });
       path.set('foo');
-      done(false);
     })
 
     it('should emit if the same array is set even if it is a different object', function(done){
