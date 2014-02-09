@@ -1,5 +1,7 @@
 # path-observer
 
+[![Build Status](https://travis-ci.org/ripplejs/path-observer.png?branch=master)](https://travis-ci.org/ripplejs/path-observer)
+
   Watch a path of an object for changes. If the path value is an
   array it will wrap it and listen for changes when the array
   is mutated via `push`, `shift`, `sort` etc.
