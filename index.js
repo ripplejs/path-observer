@@ -1,5 +1,4 @@
 var emitter = require('emitter');
-var wrap = require('observable-array').wrap;
 var equals = require('equals');
 var clone = require('clone');
 var keypath = require('keypath');
@@ -74,67 +73,12 @@ module.exports = function(obj) {
   emitter(PathObserver.prototype);
 
   /**
-   * Watch an array for changes
-   *
-   * @param {Array} arr
-   *
-   * @api private
-   * @return {void}
-   */
-  PathObserver.prototype.observeMutations = function(obj) {
-    wrap(obj);
-    var notify = this.notify.bind(this);
-
-    function add(items){
-      notify({
-        type: 'add',
-        value: items
-      });
-    }
-
-    function remove(items){
-      notify({
-        type: 'remove',
-        value: items
-      });
-    }
-
-    function sort(items){
-      notify({
-        type: 'sort'
-      });
-    }
-
-    // Whenever the array changes
-    obj.on('add', add);
-    obj.on('remove', remove);
-    obj.on('sort', sort);
-
-    function unbind(){
-      obj.off('add', add);
-      obj.off('remove', remove);
-      obj.off('sort', sort);
-    }
-
-    // Remove all events if the value of
-    // this keypath changes to another object
-    this.once('change', unbind);
-    this.once('dispose', unbind);
-  };
-
-  /**
    * Has the path changed?
    *
    * @return {Boolean}
    */
   PathObserver.prototype.dirty = function() {
-    var current = this.get();
-
-    // Changes to array will fire immediately
-    // when array methods are fired.
-    if(Array.isArray(current)) return false;
-
-    return equals(this.previous, current) === false;
+    return equals(this.previous, this.get()) === false;
   };
 
   /**
@@ -169,8 +113,6 @@ module.exports = function(obj) {
   PathObserver.prototype.check = function() {
     var current = this.get();
     var previous = this.previous;
-    var isArray = Array.isArray(current);
-    if(isArray) this.observeMutations(current);
     if(!this.dirty()) return;
     this.previous = clone(current);
     this.notify(current, previous);

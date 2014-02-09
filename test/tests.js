@@ -71,35 +71,6 @@ describe('Path Observer', function(){
 
   describe('arrays', function(){
 
-    it('should emit an event when an array adds', function(done){
-      var path = new PathObserver('bar');
-      path.change(function(changes){
-        assert(changes.type === 'add');
-        assert(changes.value[0] === 4);
-        done();
-      });
-      dummy.bar.push(4);
-    })
-
-    it('should emit an event when an array removes', function(done){
-      var path = new PathObserver('bar');
-      path.change(function(changes){
-        assert(changes.type === 'remove');
-        assert(changes.value[0] === 1);
-        done();
-      });
-      dummy.bar.shift();
-    })
-
-    it('should emit an event when an array sorts', function(done){
-      var path = new PathObserver('bar');
-      path.change(function(changes){
-        assert(changes.type === 'sort');
-        done();
-      });
-      dummy.bar.reverse();
-    })
-
     it('should emit if the array is changed to something else', function(done){
       var path = new PathObserver('bar');
       path.change(function(){

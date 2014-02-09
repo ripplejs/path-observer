@@ -6,7 +6,6 @@
   "keywords": [],
   "dependencies": {
     "ripplejs/keypath": "0.0.1",
-    "ripplejs/observable-array": "0.0.1",
     "component/emitter": "*",
     "jkroso/equals": "*",
     "component/clone": "*"
