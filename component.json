@@ -6,9 +6,9 @@
   "keywords": [],
   "dependencies": {
     "ripplejs/keypath": "0.0.1",
-    "component/emitter": "*",
-    "jkroso/equals": "*",
-    "component/clone": "*"
+    "component/emitter": "1.1.2",
+    "jkroso/equals": "0.3.6",
+    "component/clone": "0.1.1"
   },
   "development": {
     "component/assert": "*"
