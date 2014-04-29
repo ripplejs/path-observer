@@ -63,6 +63,32 @@ describe('Path Observer', function(){
       done();
     })
 
+    it('should watch for all changes', function (done) {
+      PathObserver.on('change', function(){
+        done();
+      });
+      var path = new PathObserver('foo');
+      path.set('baz');
+    });
+
+    it('should batch all changes into one event', function (done) {
+      PathObserver.on('change', function(){
+        done();
+      });
+      PathObserver('foo').set('baz');
+      PathObserver('bar').set('baz');
+    });
+
+    it('should dispose watchers for all changes', function (done) {
+      PathObserver.on('change', function(){
+        done(false);
+      });
+      PathObserver.dispose();
+      var path = new PathObserver('foo');
+      path.set('baz');
+      done();
+    });
+
   })
 
 

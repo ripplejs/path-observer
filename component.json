@@ -7,7 +7,8 @@
   "dependencies": {
     "ripplejs/keypath": "0.0.1",
     "component/emitter": "1.1.2",
-    "component/type": "1.0.0"
+    "component/type": "1.0.0",
+    "anthonyshort/raf-queue": "*"
   },
   "development": {
     "component/assert": "*"

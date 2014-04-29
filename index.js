@@ -1,6 +1,7 @@
 var emitter = require('emitter');
 var keypath = require('keypath');
 var type = require('type');
+var raf = require('raf-queue');
 
 module.exports = function(obj) {
 
@@ -37,15 +38,31 @@ module.exports = function(obj) {
   /**
    * Remove all path observers
    */
-  PathObserver.dispose = function(){
+  PathObserver.dispose = function() {
     for(var path in cache) {
       cache[path].dispose();
     }
+    this.off();
+  };
+
+  /**
+   * Emit a change event next tick
+   */
+  PathObserver.change = function() {
+    raf.once(this.notify, this);
+  };
+
+  /**
+   * Notify observers of a change
+   */
+  PathObserver.notify = function() {
+    this.emit('change');
   };
 
   /**
    * Mixin
    */
+  emitter(PathObserver);
   emitter(PathObserver.prototype);
 
   /**
@@ -85,6 +102,7 @@ module.exports = function(obj) {
 
     this.value = val;
     this.emit('change', this.value, current);
+    PathObserver.change();
     return this;
   };
 
