@@ -17,22 +17,19 @@ describe('Path Observer', function(){
     PathObserver = observe(dummy);
   });
 
+  afterEach(function () {
+    PathObserver.dispose();
+  });
+
   it('should get the value', function(){
     var path = new PathObserver('foo');
-    assert( path.get() === 'bar' );
+    assert( path.value === 'bar' );
   })
 
   it('should set the value', function(){
     var path = new PathObserver('foo');
-    path.set('baz')
+    path.set('baz');
     assert( dummy.foo === 'baz' );
-  })
-
-  it('should know when the path is dirty', function(){
-    var path = new PathObserver('foo');
-    assert(path.dirty() === false);
-    dummy.foo = 'baz';
-    assert(path.dirty() === true);
   })
 
   describe('watching for changes', function(){
@@ -82,10 +79,9 @@ describe('Path Observer', function(){
     it('should emit if the same array is set even if it is a different object', function(done){
       var path = new PathObserver('bar');
       path.change(function(){
-        done(false);
+        done();
       });
       path.set([1,2,3]);
-      done();
     })
 
     it('should unbind changes when disposed', function(done){
@@ -122,26 +118,26 @@ describe('Path Observer', function(){
 
     it('should emit events at the bottom', function(){
       three.set('something else');
-      assert(i === 3, i);
+      assert(i === 1, i);
     })
 
-    it('should emit events on the middle', function(){
+    it('should not emit events on the middle', function(){
       two.set('something else');
-      assert(i === 3, i);
-      assert(three.get() === undefined);
+      assert(i === 1, i);
+      assert(three.value === undefined);
     })
 
-    it('should emit events on the top', function(){
+    it('should not emit events on the top', function(){
       one.set('something else');
-      assert(i === 3, i);
-      assert(two.get() === undefined);
-      assert(three.get() === undefined);
+      assert(i === 1, i);
+      assert(two.value === undefined);
+      assert(three.value === undefined);
     })
 
     it('should dispose', function(){
       two.dispose();
       three.set('something else');
-      assert(i === 2);
+      assert(i === 1);
     })
 
   })
