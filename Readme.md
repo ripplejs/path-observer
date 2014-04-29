@@ -41,7 +41,15 @@ path.change(function(){
 path.set('baz');
 ```
 
-For now, this doesn't define getters so you'll need to use the .set method.
+You can watch for all changes to an object:
+
+```js
+PathObserver.on('change', function(){
+  // all changes
+});
+```
+
+Changes are batched together from the previous tick.
 
 ## License
 
