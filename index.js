@@ -49,6 +49,15 @@ module.exports = function(obj) {
   emitter(PathObserver.prototype);
 
   /**
+   * Get the value of the path.
+   *
+   * @return {Mixed}
+   */
+  PathObserver.prototype.get = function() {
+    return this.value;
+  };
+
+  /**
    * Set the value of the keypath
    *
    * @return {PathObserver}
@@ -56,10 +65,17 @@ module.exports = function(obj) {
   PathObserver.prototype.set = function(val) {
     var current = this.value;
 
-    if(type(val) === 'object') {
-      for(var key in val) {
+    if (type(val) === 'object') {
+      var changes = 0;
+      for (var key in val) {
         var path = new PathObserver(this.path + '.' + key);
+        path.once('change', function(){
+          changes += 1;
+        });
         path.set(val[key]);
+      }
+      if (changes > 0) {
+        this.emit('change', this.value, current);
       }
       return;
     }

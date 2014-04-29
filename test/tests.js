@@ -140,6 +140,39 @@ describe('Path Observer', function(){
       assert(i === 1);
     })
 
+    it('should not emit events in the middle', function(){
+      var called = false;
+      one.change(function(val){
+        called = true;
+      });
+      two.set('zab');
+      assert(called === false);
+    })
+
+    it('should emit when setting an object in the middle', function () {
+      var called = false;
+      two.change(function(val){
+        called = true;
+      });
+      two.set({
+        foo: 'zabber'
+      });
+      assert(called === true);
+    });
+
+    it('should not emit events if the value has not changed', function(){
+      var called = 0;
+      three.set('zab');
+      two.change(function(val){
+        called++;
+      });
+      three.change(function(val){
+        called++;
+      });
+      three.set('zab');
+      assert(called === 0);
+    })
+
   })
 
 })
